@@ -15,16 +15,16 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, name = "street")
+    @Column(name = "street")
     private String street;
 
-    @Column(nullable = false, name = "city")
+    @Column(name = "city")
     private String city;
 
-    @Column(nullable = false, name = "zip")
+    @Column(name = "zip")
     private String zip;
 
-    @Column(nullable = false, name = "state")
+    @Column(name = "state")
     private String state;
 
 }
