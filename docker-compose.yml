@@ -1,0 +1,11 @@
+version: "3.9"
+
+services:
+  db:
+    image: mysql:8
+    container_name: my-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: myPassword!
+      MYSQL_DATABASE: storedb
+    ports:
+      - "3306:3306"
