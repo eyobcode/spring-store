@@ -26,8 +26,8 @@ public class SpringStoreApplication {
                 .street("street")
                 .build();
 
-        user.getAddresses().add(address);
-        address.setUser(user);
+        user.setAddresses(address);
+        System.out.println(user);
 
 //       context.getBean(NotificationManager.class).sendNotification("Hello, this is a test message!");
 //
