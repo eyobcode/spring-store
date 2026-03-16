@@ -1,6 +1,7 @@
 package com.codewitheyob.store;
 
 import com.codewitheyob.store.entities.Address;
+import com.codewitheyob.store.entities.Profile;
 import com.codewitheyob.store.entities.User;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,14 +20,21 @@ public class SpringStoreApplication {
                 .password("myPassword!")
                 .build();
 
-        var address = Address.builder()
-                .state("state")
-                .city("city")
-                .zip("zip")
-                .street("street")
-                .build();
+//        var address = Address.builder()
+//                .state("state")
+//                .city("city")
+//                .zip("zip")
+//                .street("street")
+//                .build();
 
-        user.setAddresses(address);
+//        user.setAddresses(address);
+
+        var profile = Profile.builder()
+                        .bio("bio")
+                                .build();
+        user.setProfile(profile);
+        profile.setUser(user);
+
         System.out.println(user);
 
 //       context.getBean(NotificationManager.class).sendNotification("Hello, this is a test message!");
