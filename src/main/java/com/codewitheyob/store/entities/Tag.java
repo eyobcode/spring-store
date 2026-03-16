@@ -4,6 +4,9 @@ package com.codewitheyob.store.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -18,4 +21,7 @@ public class Tag {
 
     @Column(name = "name")
     private String name;
+
+    @ManyToMany
+    private Set<User> users = new HashSet<>();
 }
