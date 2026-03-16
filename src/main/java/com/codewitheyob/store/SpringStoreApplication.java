@@ -1,5 +1,6 @@
 package com.codewitheyob.store;
 
+import com.codewitheyob.store.entities.Address;
 import com.codewitheyob.store.entities.User;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,11 +13,22 @@ public class SpringStoreApplication {
 
        ApplicationContext context =  SpringApplication.run(SpringStoreApplication.class, args);
 
-        User.builder()
+        var user = User.builder()
                 .name("eyob")
                 .email("eyob@m.com")
                 .password("myPassword!")
                 .build();
+
+        var address = Address.builder()
+                .state("state")
+                .city("city")
+                .zip("zip")
+                .street("street")
+                .build();
+
+        user.getAddresses().add(address);
+        address.setUser(user);
+
 //       context.getBean(NotificationManager.class).sendNotification("Hello, this is a test message!");
 //
 //       var pay = context.getBean(PaymentManager.class);
