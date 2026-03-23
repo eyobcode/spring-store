@@ -25,8 +25,13 @@ public class Category {
     private String name;
 
     @Builder.Default
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category", cascade = CascadeType.PERSIST)
     @ToString.Exclude
     private Set<Product> products = new HashSet<>();
+
+    public void addProduct(Product product){
+        products.add(product);
+        product.setCategory(this);
+    }
 
 }
