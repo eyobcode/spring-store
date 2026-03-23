@@ -1,8 +1,6 @@
 package com.codewitheyob.store;
 
-import com.codewitheyob.store.entities.Address;
-import com.codewitheyob.store.entities.Profile;
-import com.codewitheyob.store.entities.User;
+import com.codewitheyob.store.services.UserService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -14,12 +12,8 @@ public class SpringStoreApplication {
 
        ApplicationContext context =  SpringApplication.run(SpringStoreApplication.class, args);
 
-        var user = User.builder()
-                .name("eyob")
-                .email("eyob@m.com")
-                .password("myPassword!")
-                .build();
-
+        var user = context.getBean(UserService.class);
+        user.getAddressById();
 //        var address = Address.builder()
 //                .state("state")
 //                .city("city")
@@ -29,13 +23,29 @@ public class SpringStoreApplication {
 
 //        user.setAddresses(address);
 
-        var profile = Profile.builder()
-                        .bio("bio")
-                                .build();
-        user.setProfile(profile);
-        profile.setUser(user);
-
-        System.out.println(user);
+//        var profile = Profile.builder()
+//                        .bio("bio")
+//                                .build();
+//        user.setProfile(profile);
+//        profile.setUser(user);
+//
+//        System.out.println(user);
+//
+//        System.out.println("======= Category-Product===========");
+//
+//        var category = Category.builder()
+//                .name("name")
+//                .build();
+//        BigDecimal seven = BigDecimal.valueOf(7);
+//        var product = Product.builder()
+//                .name("ma,e")
+//                .price(seven)
+//                .build();
+//
+//        category.getProducts().add(product);
+//        product.setCategory(category);
+//
+//        System.out.println(category);
 
 //       context.getBean(NotificationManager.class).sendNotification("Hello, this is a test message!");
 //
