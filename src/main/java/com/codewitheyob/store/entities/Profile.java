@@ -26,7 +26,7 @@ public class Profile {
     @Column(name = "loyalty_point")
     private int loyalty_point;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id")
     @MapsId
     @ToString.Exclude
