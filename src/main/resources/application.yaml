@@ -9,7 +9,7 @@ spring:
     show-sql: true  # Enables logging of SQL statements to the console
     properties:
       hibernate:
-        format_sql: true  # Pretty-prints the SQL for better readability
+#        format_sql: true  # Pretty-prints the SQL for better readability
         highlight_sql: true # Optional: adds syntax highlighting if your console supports it
 
 #    driver-class-name: com.mysql.cj.jdbc.Driver
