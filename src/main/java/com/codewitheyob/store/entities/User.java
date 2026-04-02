@@ -44,9 +44,6 @@ public class User {
         address.setUser(null);
     }
 
-    @ManyToMany
-    @ToString.Exclude
-    private Set<Tag> tags = new HashSet<>();
 
     @OneToOne(mappedBy = "user")
     private Profile profile;
