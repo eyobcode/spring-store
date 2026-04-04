@@ -23,8 +23,8 @@ public class Profile {
     @Column(name = "phone_number")
     private String phone_number;
 
-    @Column(name = "loyalty_point")
-    private int loyalty_point;
+    @Column(name = "loyalty_points")
+    private int loyaltyPoints;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id")
