@@ -1,6 +1,7 @@
 package com.codewitheyob.store.repositories;
 
 import com.codewitheyob.store.entities.Product;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,6 +12,11 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
     // ===== BASIC STRING =====
+    @EntityGraph(attributePaths = "category")
+    List<Product> findByCategoryId(Byte categoryId);
+    @EntityGraph(attributePaths = "category")
+    @Query("SELECT p FROM Product p WHERE p.category.id = :categoryId")
+    List<Product> findAllWithCategoryId(@Param("categoryId") Byte categoryId);
     List<Product> findByName(String name);
     List<Product> findByNameLike(String name);
     List<Product> findByNameNotLike(String name);
