@@ -1,6 +1,7 @@
 package com.codewitheyob.store.controllers;
 
 import com.codewitheyob.store.dtos.RegisterUserRequest;
+import com.codewitheyob.store.dtos.UpdateUserRequest;
 import com.codewitheyob.store.dtos.UserDto;
 import com.codewitheyob.store.mappers.UserMapper;
 import com.codewitheyob.store.repositories.UserRepository;
@@ -49,5 +50,17 @@ public class UserController {
         var userDto = userMapper.toDto(user);
         var uri = uriBuilder.path("/users/{id}").buildAndExpand(userDto.getId()).toUri();
         return ResponseEntity.created(uri).body(userDto);
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<UserDto> update(
+            @PathVariable(name = "id") Long userId,
+            @RequestBody UpdateUserRequest request){
+        var user = userRepository.findById(userId).orElse(null);
+        if(user == null) return ResponseEntity.notFound().build();
+
+        userMapper.update(request, user);
+        userRepository.save(user);
+
+        return ResponseEntity.ok().body(userMapper.toDto(user));
     }
 }
