@@ -8,14 +8,12 @@ import com.codewitheyob.store.entities.CartItem;
 import com.codewitheyob.store.mappers.CartMapper;
 import com.codewitheyob.store.repositories.CartRepository;
 import com.codewitheyob.store.repositories.ProductRepository;
-import com.codewitheyob.store.repositories.ProfileRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.Collections;
 import java.util.UUID;
 
 @RestController
@@ -24,7 +22,6 @@ import java.util.UUID;
 public class CartController {
     private final CartRepository cartRepository;
     private final CartMapper cartMapper;
-    private final ProfileRepository profileRepository;
     private final ProductRepository productRepository;
 
     @PostMapping
@@ -45,12 +42,12 @@ public class CartController {
             @PathVariable UUID cartId,
             @RequestBody AddItemToCartRequest request){
 
-        var cart = cartRepository.findById(cartId).orElse(null);
+        var cart = cartRepository.getCartWithId(cartId).orElse(null);
         if (cart == null) return ResponseEntity.notFound().build();
 
         var product = productRepository.findById(request.getProductId()).orElse(null);
         if(product == null) return ResponseEntity.badRequest().build();
-        var cartItem = cart.getCartItems()
+        var cartItem = cart.getItems()
                 .stream()
                 .filter(item -> item.getProduct().getId().equals(product.getId()))
                 .findFirst()
@@ -63,12 +60,18 @@ public class CartController {
             cartItem.setProduct(product);
             cartItem.setQuantity(1);
             cartItem.setCart(cart);
-            cart.getCartItems().add(cartItem);
+            cart.getItems().add(cartItem);
         }
         cartRepository.save(cart);
         var cartItemDto = cartMapper.toDto(cartItem);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(cartItemDto);
 
+    }
+    @GetMapping("/{cartId}")
+    public ResponseEntity<CartDto> getCart(@PathVariable UUID cartId){
+        var cart = cartRepository.getCartWithId(cartId).orElse(null);
+        if(cart == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(cartMapper.toDto(cart));
     }
 }
