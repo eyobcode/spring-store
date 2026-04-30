@@ -36,7 +36,7 @@ public class CartController {
         return ResponseEntity.created(uri).body(cartDto);
     }
 
-    
+
     @PostMapping("/{cartId}/items")
     public ResponseEntity<CartItemDto> addToCart(
             @PathVariable UUID cartId,
