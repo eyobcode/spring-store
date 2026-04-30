@@ -23,7 +23,7 @@ public class Cart {
     @Column(name = "date_created",insertable = false, updatable = false)
     private LocalDate dateCreated;
 
-    @OneToMany(mappedBy = "cart",cascade = CascadeType.MERGE)
+    @OneToMany(mappedBy = "cart",cascade = CascadeType.MERGE,orphanRemoval = true)
     private Set<CartItem> items = new LinkedHashSet<>();
 
     public BigDecimal getTotalPrice(){
@@ -32,6 +32,7 @@ public class Cart {
                 .map(CartItem::getTotalPrice)
                 .reduce(BigDecimal.ZERO,BigDecimal::add);
     }
+
     public CartItem getItem(Long productId){
         return items
                 .stream()
@@ -39,6 +40,7 @@ public class Cart {
                 .findFirst()
                 .orElse(null);
     }
+
     public CartItem addItem(Product product){
         var cartItem = getItem(product.getId());
         if (cartItem != null){
@@ -53,4 +55,11 @@ public class Cart {
         return cartItem;
     }
 
+    public void removeItem(Long productId){
+        var cartItem = getItem(productId);
+        if(cartItem != null) {
+            items.remove(cartItem);
+            cartItem.setCart(null);
+        }
+    }
 }
