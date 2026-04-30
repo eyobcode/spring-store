@@ -1,19 +1,19 @@
 package com.codewitheyob.store.controllers;
 
-import com.codewitheyob.store.dtos.AddItemToCartRequest;
-import com.codewitheyob.store.dtos.CartDto;
-import com.codewitheyob.store.dtos.CartItemDto;
+import com.codewitheyob.store.dtos.*;
 import com.codewitheyob.store.entities.Cart;
 import com.codewitheyob.store.entities.CartItem;
 import com.codewitheyob.store.mappers.CartMapper;
 import com.codewitheyob.store.repositories.CartRepository;
 import com.codewitheyob.store.repositories.ProductRepository;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -68,10 +68,39 @@ public class CartController {
         return ResponseEntity.status(HttpStatus.CREATED).body(cartItemDto);
 
     }
+
+
     @GetMapping("/{cartId}")
     public ResponseEntity<CartDto> getCart(@PathVariable UUID cartId){
         var cart = cartRepository.getCartWithId(cartId).orElse(null);
         if(cart == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(cartMapper.toDto(cart));
+    }
+
+
+    @PutMapping("/{cartId}/items/{productId}")
+    public ResponseEntity<?> updateCart(
+            @PathVariable UUID cartId,
+            @PathVariable Long productId,
+            @Valid @RequestBody UpdateCartItemRequest request){
+
+        var cart = cartRepository.getCartWithId(cartId).orElse(null);
+        if(cart == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                Map.of("error","Cart not found.")
+        );
+
+        var cartItem = cart.getItems()
+                .stream()
+                .filter(item -> item.getProduct().getId().equals(productId))
+                .findFirst()
+                .orElse(null);
+        if(cartItem == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                Map.of("error","Product wasn't found in the cart.")
+        );;
+
+        cartItem.setQuantity(request.getQuantity());
+        cartRepository.save(cart);
+
+        return ResponseEntity.ok(cartMapper.toDto(cartItem));
     }
 }
