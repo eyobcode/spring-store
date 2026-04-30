@@ -84,6 +84,8 @@ public class CartController {
 
         return ResponseEntity.ok(cartMapper.toDto(cartItem));
     }
+
+
     @DeleteMapping("/{cartId}/items/{productId}")
     public ResponseEntity<?> removeProduct(
             @PathVariable UUID cartId,
@@ -96,6 +98,20 @@ public class CartController {
         cart.removeItem(productId);
         cartRepository.save(cart);
         return ResponseEntity.noContent().build();
+    }
+
+
+    @DeleteMapping("/{cartId}/items")
+    public ResponseEntity<Void> clearCart(@PathVariable UUID cartId){
+        var cart = cartRepository.getCartWithId(cartId).orElse(null);
+
+        if(cart == null)return ResponseEntity.notFound().build();
+
+        cart.clear();
+        cartRepository.save(cart);
+
+        return ResponseEntity.noContent().build();
+
     }
 
 }
