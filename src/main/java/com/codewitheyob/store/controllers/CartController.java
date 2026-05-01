@@ -52,9 +52,8 @@ public class CartController {
 
     @GetMapping("/{cartId}")
     public ResponseEntity<CartDto> getCart(@PathVariable UUID cartId){
-        var cart = cartRepository.getCartWithId(cartId).orElse(null);
-        if(cart == null) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(cartMapper.toDto(cart));
+        var cartDto = cartService.getCart(cartId);
+        return ResponseEntity.ok(cartDto);
     }
 
 
