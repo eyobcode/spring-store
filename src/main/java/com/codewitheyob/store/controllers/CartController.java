@@ -51,32 +51,18 @@ public class CartController {
 
 
     @GetMapping("/{cartId}")
-    public ResponseEntity<CartDto> getCart(@PathVariable UUID cartId){
-        var cartDto = cartService.getCart(cartId);
-        return ResponseEntity.ok(cartDto);
+    public CartDto getCart(@PathVariable UUID cartId){
+        return cartService.getCart(cartId);
     }
 
 
     @PutMapping("/{cartId}/items/{productId}")
-    public ResponseEntity<?> updateCart(
+    public CartItemDto updateCart(
             @PathVariable UUID cartId,
             @PathVariable Long productId,
             @Valid @RequestBody UpdateCartItemRequest request){
 
-        var cart = cartRepository.getCartWithId(cartId).orElse(null);
-        if(cart == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                Map.of("error","Cart not found.")
-        );
-
-        var cartItem = cart.getItem(productId);
-        if(cartItem == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                Map.of("error","Product wasn't found in the cart.")
-        );
-
-        cartItem.setQuantity(request.getQuantity());
-        cartRepository.save(cart);
-
-        return ResponseEntity.ok(cartMapper.toDto(cartItem));
+        return cartService.update(cartId,productId,request.getQuantity());
     }
 
 
