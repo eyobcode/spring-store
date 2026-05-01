@@ -3,9 +3,6 @@ package com.codewitheyob.store.controllers;
 import com.codewitheyob.store.dtos.*;
 import com.codewitheyob.store.exceptions.CartNotFoundException;
 import com.codewitheyob.store.exceptions.ProductNotFoundException;
-import com.codewitheyob.store.mappers.CartMapper;
-import com.codewitheyob.store.repositories.CartRepository;
-import com.codewitheyob.store.repositories.ProductRepository;
 import com.codewitheyob.store.services.CartService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -21,9 +18,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @RequestMapping("/carts")
 public class CartController {
-    private final CartRepository cartRepository;
-    private final CartMapper cartMapper;
-    private final ProductRepository productRepository;
     private final CartService cartService;
 
     @PostMapping
