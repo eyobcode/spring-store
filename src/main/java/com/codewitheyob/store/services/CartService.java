@@ -42,4 +42,10 @@ public class CartService {
 
         return cartMapper.toDto(cartItem);
     }
+
+    public CartDto getCart(UUID cartId){
+        var cart = cartRepository.getCartWithId(cartId).orElse(null);
+        if(cart == null) throw new CartNotFoundException();
+        return cartMapper.toDto(cart);
+    }
 }
