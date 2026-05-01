@@ -4,6 +4,9 @@ import com.codewitheyob.store.dtos.*;
 import com.codewitheyob.store.exceptions.CartNotFoundException;
 import com.codewitheyob.store.exceptions.ProductNotFoundException;
 import com.codewitheyob.store.services.CartService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +20,7 @@ import java.util.UUID;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/carts")
+@Tag(name = "Cart")
 public class CartController {
     private final CartService cartService;
 
@@ -32,7 +36,9 @@ public class CartController {
 
 
     @PostMapping("/{cartId}/items")
+    @Operation(summary = "Add items to the cart.")
     public ResponseEntity<CartItemDto> addToCart(
+            @Parameter(description = "The ID of the cart.")
             @PathVariable UUID cartId,
             @RequestBody AddItemToCartRequest request){
 
