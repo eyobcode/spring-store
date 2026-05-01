@@ -10,9 +10,11 @@ import com.codewitheyob.store.repositories.CartRepository;
 import com.codewitheyob.store.repositories.ProductRepository;
 import org.antlr.v4.runtime.misc.LogManager;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -47,5 +49,18 @@ public class CartService {
         var cart = cartRepository.getCartWithId(cartId).orElse(null);
         if(cart == null) throw new CartNotFoundException();
         return cartMapper.toDto(cart);
+    }
+
+    public CartItemDto update(UUID cartId,Long productId,Integer quantity){
+        var cart = cartRepository.getCartWithId(cartId).orElse(null);
+        if(cart == null) throw new CartNotFoundException();
+
+        var cartItem = cart.getItem(productId);
+        if(cartItem == null) throw new ProductNotFoundException();
+
+        cartItem.setQuantity(quantity);
+        cartRepository.save(cart);
+
+        return cartMapper.toDto(cartItem);
     }
 }
