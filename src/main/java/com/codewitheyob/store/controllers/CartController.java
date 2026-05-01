@@ -1,7 +1,6 @@
 package com.codewitheyob.store.controllers;
 
 import com.codewitheyob.store.dtos.*;
-import com.codewitheyob.store.entities.Cart;
 import com.codewitheyob.store.exceptions.CartNotFoundException;
 import com.codewitheyob.store.exceptions.ProductNotFoundException;
 import com.codewitheyob.store.mappers.CartMapper;
@@ -78,7 +77,7 @@ public class CartController {
 
     @DeleteMapping("/{cartId}/items")
     public ResponseEntity<Void> clearCart(@PathVariable UUID cartId){
-        cartService.clear(cartId);
+        cartService.clearCart(cartId);
 
         return ResponseEntity.noContent().build();
 
