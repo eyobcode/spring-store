@@ -8,13 +8,8 @@ import com.codewitheyob.store.exceptions.ProductNotFoundException;
 import com.codewitheyob.store.mappers.CartMapper;
 import com.codewitheyob.store.repositories.CartRepository;
 import com.codewitheyob.store.repositories.ProductRepository;
-import org.antlr.v4.runtime.misc.LogManager;
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -71,7 +66,7 @@ public class CartService {
         cartRepository.save(cart);
     }
 
-    public void clear(UUID cartId){
+    public void clearCart(UUID cartId){
         var cart = cartRepository.getCartWithId(cartId).orElse(null);
         if(cart == null) throw new CartNotFoundException();
         cart.clear();
