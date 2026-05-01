@@ -8,15 +8,17 @@ import com.codewitheyob.store.exceptions.ProductNotFoundException;
 import com.codewitheyob.store.mappers.CartMapper;
 import com.codewitheyob.store.repositories.CartRepository;
 import com.codewitheyob.store.repositories.ProductRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
 @Service
+@AllArgsConstructor
 public class CartService {
     private CartMapper cartMapper;
     private CartRepository cartRepository;
-    ProductRepository productRepository;
+    private ProductRepository productRepository;
 
 
     public CartDto createCart(){
