@@ -14,5 +14,5 @@ import java.lang.annotation.Target;
 public @interface Lowercase {
     String message() default "must be lowercase";
     Class<?>[] groups() default {};
-    Class<? extends Payload>[] payloads() default {};
+    Class<? extends Payload>[] payload() default {};
 }
