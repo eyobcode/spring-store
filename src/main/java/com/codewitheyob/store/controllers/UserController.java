@@ -1,9 +1,6 @@
 package com.codewitheyob.store.controllers;
 
-import com.codewitheyob.store.dtos.ChangePasswordRequest;
-import com.codewitheyob.store.dtos.RegisterUserRequest;
-import com.codewitheyob.store.dtos.UpdateUserRequest;
-import com.codewitheyob.store.dtos.UserDto;
+import com.codewitheyob.store.dtos.*;
 import com.codewitheyob.store.mappers.UserMapper;
 import com.codewitheyob.store.repositories.UserRepository;
 import jakarta.validation.Valid;
@@ -64,6 +61,7 @@ public class UserController {
         var uri = uriBuilder.path("/users/{id}").buildAndExpand(userDto.getId()).toUri();
         return ResponseEntity.created(uri).body(userDto);
     }
+
     @PutMapping("/{id}")
     public ResponseEntity<UserDto> update(
             @PathVariable(name = "id") Long userId,
@@ -76,6 +74,7 @@ public class UserController {
 
         return ResponseEntity.ok().body(userMapper.toDto(user));
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id){
         var user = userRepository.findById(id).orElse(null);
@@ -84,6 +83,7 @@ public class UserController {
         userRepository.delete(user);
         return ResponseEntity.noContent().build();
     }
+
     @PostMapping("/{id}/change-password")
     public ResponseEntity<Void> changePassword(
             @PathVariable Long id,
