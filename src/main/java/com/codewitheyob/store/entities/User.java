@@ -30,6 +30,10 @@ public class User {
     @Column(nullable = false, name = "password")
     private String password;
 
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     @OneToMany(mappedBy = "user")
     @Builder.Default
     @ToString.Exclude
