@@ -15,3 +15,5 @@ spring:
       include-stacktrace: never
   jwt:
     secret: ${JWT_SECRET}
+    accessTokenExpiration: 300 # 3m
+    refreshTokenExpiration: 604800 # 7d
