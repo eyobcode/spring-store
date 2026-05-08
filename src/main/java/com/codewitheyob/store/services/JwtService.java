@@ -1,6 +1,7 @@
 package com.codewitheyob.store.services;
 
 import com.codewitheyob.store.config.JwtConfig;
+import com.codewitheyob.store.entities.Role;
 import com.codewitheyob.store.entities.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -55,5 +56,9 @@ public class JwtService {
 
     public Long getUserIdFromToken(String token){
         return Long.valueOf(getClaims(token).getSubject());
+    }
+
+    public Role getUserRoleFromToken(String token) {
+        return Role.valueOf(getClaims(token).get("role", String.class));
     }
 }
