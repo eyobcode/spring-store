@@ -1,11 +1,14 @@
 package com.codewitheyob.store.controllers;
 
+import com.codewitheyob.store.config.JwtConfig;
 import com.codewitheyob.store.dtos.JwtResponse;
 import com.codewitheyob.store.dtos.LoginRequest;
 import com.codewitheyob.store.dtos.UserDto;
 import com.codewitheyob.store.mappers.UserMapper;
 import com.codewitheyob.store.repositories.UserRepository;
 import com.codewitheyob.store.services.JwtService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,21 +25,34 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
+    private final JwtConfig jwtConfig;
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
     @PostMapping("/login")
-    public ResponseEntity<JwtResponse> loginUser(@Valid @RequestBody LoginRequest request){
+    public ResponseEntity<JwtResponse> loginUser(
+            @Valid @RequestBody LoginRequest request,
+            HttpServletResponse response ){
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
                         request.getPassword()
                 )
         );
+
         var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
 
-        var token = jwtService.generateToken(user);
-        return ResponseEntity.ok(new JwtResponse(token));
+        var accessToken = jwtService.generateAccessToken(user);
+        var refreshToken = jwtService.generateRefreshToken(user);
+
+        var cookie = new Cookie("refreshToken", refreshToken);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/auth/refresh");
+        cookie.setMaxAge(jwtConfig.getRefreshTokenExpiration());
+        cookie.setSecure(true);
+        response.addCookie(cookie);
+
+        return ResponseEntity.ok(new JwtResponse(accessToken));
     }
 
     @ExceptionHandler(BadCredentialsException.class)
