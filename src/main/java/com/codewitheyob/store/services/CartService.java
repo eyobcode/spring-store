@@ -30,7 +30,7 @@ public class CartService {
     }
 
     public CartItemDto addToCart(UUID cartId,Long productId){
-        var cart = cartRepository.getCartWithId(cartId).orElse(null);
+        var cart = cartRepository.getCartWithItems(cartId).orElse(null);
         if (cart == null) throw new CartNotFoundException();
 
         var product = productRepository.findById(productId).orElse(null);
@@ -43,13 +43,13 @@ public class CartService {
     }
 
     public CartDto getCart(UUID cartId){
-        var cart = cartRepository.getCartWithId(cartId).orElse(null);
+        var cart = cartRepository.getCartWithItems(cartId).orElse(null);
         if(cart == null) throw new CartNotFoundException();
         return cartMapper.toDto(cart);
     }
 
     public CartItemDto update(UUID cartId,Long productId,Integer quantity){
-        var cart = cartRepository.getCartWithId(cartId).orElse(null);
+        var cart = cartRepository.getCartWithItems(cartId).orElse(null);
         if(cart == null) throw new CartNotFoundException();
 
         var cartItem = cart.getItem(productId);
@@ -62,14 +62,14 @@ public class CartService {
     }
 
     public void removeProduct(UUID cartId, Long productId){
-        var cart = cartRepository.getCartWithId(cartId).orElse(null);
+        var cart = cartRepository.getCartWithItems(cartId).orElse(null);
         if(cart == null) throw new CartNotFoundException();
         cart.removeItem(productId);
         cartRepository.save(cart);
     }
 
     public void clearCart(UUID cartId){
-        var cart = cartRepository.getCartWithId(cartId).orElse(null);
+        var cart = cartRepository.getCartWithItems(cartId).orElse(null);
         if(cart == null) throw new CartNotFoundException();
         cart.clear();
         cartRepository.save(cart);
