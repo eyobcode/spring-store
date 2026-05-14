@@ -1,11 +1,14 @@
 package com.codewitheyob.store.controllers;
 
+import com.codewitheyob.store.dtos.ErrorDto;
 import com.codewitheyob.store.dtos.OrderDto;
+import com.codewitheyob.store.exceptions.OrderNotFoundException;
 import com.codewitheyob.store.services.OrderService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -14,10 +17,28 @@ import java.util.List;
 @RequestMapping("/orders")
 public class OrderController {
     private final OrderService orderService;
-
     @GetMapping
     public List<OrderDto> getAllOrder(){
         return orderService.getAllOrders();
     }
+
+    @GetMapping("/{orderId}")
+    public OrderDto getOrder(@PathVariable Long orderId){
+        return orderService.getOrders(orderId);
+    }
+
+    @ExceptionHandler(OrderNotFoundException.class)
+    public ResponseEntity<Void> handleOrderNotFound(){
+        return ResponseEntity.notFound().build();
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorDto> handleAccessDenied(Exception ex){
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(new ErrorDto(ex.getMessage()));
+    }
+
+
 
 }
