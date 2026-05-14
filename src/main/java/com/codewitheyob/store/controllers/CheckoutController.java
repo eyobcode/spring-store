@@ -9,6 +9,7 @@ import com.codewitheyob.store.repositories.CartRepository;
 import com.codewitheyob.store.repositories.OrderRepository;
 import com.codewitheyob.store.services.AuthService;
 import com.codewitheyob.store.services.CartService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,7 +29,7 @@ public class CheckoutController {
     private final CartService cartService;
 
     @PostMapping
-    public ResponseEntity<?> checkout(@RequestBody CheckoutRequest request){
+    public ResponseEntity<?> checkout(@Valid @RequestBody CheckoutRequest request){
         var cart = cartRepository.getCartWithItems(request.getCartId()).orElse(null);
         if (cart == null) return ResponseEntity.badRequest().body(
                 Map.of("error", "Cart not found.")
