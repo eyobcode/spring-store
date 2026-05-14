@@ -2,6 +2,7 @@ package com.codewitheyob.store.controllers;
 
 import com.codewitheyob.store.dtos.CheckoutRequest;
 import com.codewitheyob.store.dtos.CheckoutResponse;
+import com.codewitheyob.store.dtos.ErrorDto;
 import com.codewitheyob.store.entities.Order;
 import com.codewitheyob.store.entities.OrderItem;
 import com.codewitheyob.store.entities.OrderStatus;
@@ -32,10 +33,10 @@ public class CheckoutController {
     public ResponseEntity<?> checkout(@Valid @RequestBody CheckoutRequest request){
         var cart = cartRepository.getCartWithItems(request.getCartId()).orElse(null);
         if (cart == null) return ResponseEntity.badRequest().body(
-                Map.of("error", "Cart not found.")
+                new ErrorDto("Cart not found.")
         );
         if (cart.getItems().isEmpty()) return ResponseEntity.badRequest().body(
-                Map.of("error","Cart is empty.")
+                new ErrorDto("Cart is empty.")
         );
         var order = new Order();
         order.setStatus(OrderStatus.PENDING);
