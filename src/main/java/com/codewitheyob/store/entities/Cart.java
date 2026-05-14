@@ -41,6 +41,10 @@ public class Cart {
                 .orElse(null);
     }
 
+    public boolean isEmpty(){
+        return items.isEmpty();
+    }
+
     public CartItem addItem(Product product){
         var cartItem = getItem(product.getId());
         if (cartItem != null){
