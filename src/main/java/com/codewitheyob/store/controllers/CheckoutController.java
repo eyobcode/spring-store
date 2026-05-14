@@ -38,19 +38,7 @@ public class CheckoutController {
         if (cart.getItems().isEmpty()) return ResponseEntity.badRequest().body(
                 new ErrorDto("Cart is empty.")
         );
-        var order = new Order();
-        order.setStatus(OrderStatus.PENDING);
-        order.setTotalPrice(cart.getTotalPrice());
-        order.setCustomer(authService.getCurrentUser());
-
-        cart.getItems().forEach(item -> {
-            var orderItem = new OrderItem();
-            orderItem.setProduct(item.getProduct());
-            orderItem.setTotalPrice(item.getTotalPrice());
-            orderItem.setQuantity(item.getQuantity());
-            orderItem.setUnitPrice(item.getProduct().getPrice() );
-            order.addItem(orderItem);
-        });
+        var order = Order.formatCart(cart,authService.getCurrentUser());
 
         orderRepository.save(order);
         cartService.clearCart(cart.getId());
