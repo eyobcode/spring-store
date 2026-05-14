@@ -13,7 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.Map;
 import java.util.Set;
 
 @RestController
@@ -51,7 +50,7 @@ public class UserController {
             @Valid @RequestBody RegisterUserRequest request){
         if (userRepository.existsByEmail(request.getEmail())){
             return ResponseEntity.badRequest().body(
-                    Map.of("email", "Email is already registered.")
+                    new ErrorDto("Email is already registered.")
             );
         }
 
