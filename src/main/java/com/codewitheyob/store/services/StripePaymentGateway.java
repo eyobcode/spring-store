@@ -13,7 +13,6 @@ import java.math.BigDecimal;
 
 @Service
 public class StripePaymentGateway implements PaymentGateway {
-
     @Value("${websiteUrl}")
     private String websiteUrl;
 
