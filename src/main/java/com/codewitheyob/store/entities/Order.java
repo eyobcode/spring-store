@@ -23,7 +23,7 @@ public class Order {
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    private OrderStatus status;
+    private PaymentStatus status;
 
     @Column(name = "created_at",insertable = false,updatable = false)
     private LocalDate createdAt;
@@ -36,7 +36,7 @@ public class Order {
 
     public static Order formatCart(Cart cart,User customer){
         var order = new Order();
-        order.setStatus(OrderStatus.PENDING);
+        order.setStatus(PaymentStatus.PENDING);
         order.setTotalPrice(cart.getTotalPrice());
         order.setCustomer(customer);
 
