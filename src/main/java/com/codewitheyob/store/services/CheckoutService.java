@@ -3,20 +3,15 @@ package com.codewitheyob.store.services;
 import com.codewitheyob.store.dtos.CheckoutRequest;
 import com.codewitheyob.store.dtos.CheckoutResponse;
 import com.codewitheyob.store.entities.Order;
+import com.codewitheyob.store.entities.PaymentStatus;
 import com.codewitheyob.store.exceptions.CartNotFoundException;
 import com.codewitheyob.store.exceptions.CartEmptyException;
 import com.codewitheyob.store.exceptions.PaymentException;
 import com.codewitheyob.store.repositories.CartRepository;
 import com.codewitheyob.store.repositories.OrderRepository;
-import com.stripe.exception.StripeException;
-import com.stripe.model.checkout.Session;
-import com.stripe.param.checkout.SessionCreateParams;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.math.BigDecimal;
 
 @Service
 @RequiredArgsConstructor
@@ -49,5 +44,15 @@ public class CheckoutService {
             orderRepository.delete(order);
             throw ex;
         }
+    }
+
+    public void handleWebhookEvent(WebhookRequest request){
+        paymentGateway
+                .parseWebhookRequest(request)
+                .ifPresent(paymentResult -> {
+                    Order order = orderRepository.findById(paymentResult.getOrderId()).orElseThrow();
+                    order.setStatus(paymentResult.getPaymentStatus());
+                    orderRepository.save(order);
+                });
     }
 }
