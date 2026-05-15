@@ -1,9 +1,11 @@
 package com.codewitheyob.store.controllers;
 
 import com.codewitheyob.store.dtos.CheckoutRequest;
+import com.codewitheyob.store.dtos.CheckoutResponse;
 import com.codewitheyob.store.dtos.ErrorDto;
 import com.codewitheyob.store.exceptions.CartNotFoundException;
 import com.codewitheyob.store.exceptions.CartEmptyException;
+import com.codewitheyob.store.exceptions.PaymentException;
 import com.codewitheyob.store.services.CheckoutService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -19,16 +21,17 @@ public class CheckoutController {
     private final CheckoutService checkoutService;
 
     @PostMapping
-    public ResponseEntity<?> checkout(@Valid @RequestBody CheckoutRequest request){
-        try {
-            return ResponseEntity.ok(checkoutService.checkout(request));
-        } catch (Exception ex){
-            System.out.println(ex.getMessage());
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ErrorDto("Error creating a checkout session"));
-        }
+    public CheckoutResponse checkout(@Valid @RequestBody CheckoutRequest request){
+        return checkoutService.checkout(request);
     }
+
+    @ExceptionHandler(PaymentException.class)
+    public ResponseEntity<?> handlePaymentException(){
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ErrorDto("Error creating a checkout session"));
+    }
+
 
     @ExceptionHandler({CartNotFoundException.class, CartEmptyException.class})
     public ResponseEntity<ErrorDto> handleException(Exception ex){
