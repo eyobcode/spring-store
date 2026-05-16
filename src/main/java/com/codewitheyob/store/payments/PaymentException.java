@@ -1,4 +1,4 @@
-package com.codewitheyob.store.exceptions;
+package com.codewitheyob.store.payments;
 
 import lombok.NoArgsConstructor;
 
