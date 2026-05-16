@@ -1,4 +1,4 @@
-package com.codewitheyob.store.config;
+package com.codewitheyob.store.payments;
 
 import com.stripe.Stripe;
 import jakarta.annotation.PostConstruct;
