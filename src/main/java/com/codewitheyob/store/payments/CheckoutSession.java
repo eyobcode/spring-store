@@ -1,4 +1,4 @@
-package com.codewitheyob.store.services;
+package com.codewitheyob.store.payments;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
