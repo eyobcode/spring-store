@@ -1,4 +1,4 @@
-package com.codewitheyob.store.dtos;
+package com.codewitheyob.store.payments;
 
 import lombok.Data;
 
