@@ -1,14 +1,12 @@
-package com.codewitheyob.store.services;
+package com.codewitheyob.store.payments;
 
-import com.codewitheyob.store.dtos.CheckoutRequest;
-import com.codewitheyob.store.dtos.CheckoutResponse;
 import com.codewitheyob.store.entities.Order;
-import com.codewitheyob.store.entities.PaymentStatus;
 import com.codewitheyob.store.exceptions.CartNotFoundException;
 import com.codewitheyob.store.exceptions.CartEmptyException;
-import com.codewitheyob.store.exceptions.PaymentException;
 import com.codewitheyob.store.repositories.CartRepository;
 import com.codewitheyob.store.repositories.OrderRepository;
+import com.codewitheyob.store.services.AuthService;
+import com.codewitheyob.store.services.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
