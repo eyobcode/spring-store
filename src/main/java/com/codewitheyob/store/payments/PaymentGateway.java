@@ -1,4 +1,4 @@
-package com.codewitheyob.store.services;
+package com.codewitheyob.store.payments;
 
 import com.codewitheyob.store.entities.Order;
 
