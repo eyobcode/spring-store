@@ -1,14 +1,9 @@
-package com.codewitheyob.store.controllers;
+package com.codewitheyob.store.payments;
 
-import com.codewitheyob.store.dtos.CheckoutRequest;
-import com.codewitheyob.store.dtos.CheckoutResponse;
 import com.codewitheyob.store.dtos.ErrorDto;
 import com.codewitheyob.store.exceptions.CartNotFoundException;
 import com.codewitheyob.store.exceptions.CartEmptyException;
-import com.codewitheyob.store.exceptions.PaymentException;
 import com.codewitheyob.store.repositories.OrderRepository;
-import com.codewitheyob.store.services.CheckoutService;
-import com.codewitheyob.store.services.WebhookRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
