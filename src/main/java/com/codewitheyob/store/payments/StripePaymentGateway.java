@@ -1,9 +1,8 @@
-package com.codewitheyob.store.services;
+package com.codewitheyob.store.payments;
 
 import com.codewitheyob.store.entities.Order;
 import com.codewitheyob.store.entities.OrderItem;
 import com.codewitheyob.store.entities.PaymentStatus;
-import com.codewitheyob.store.exceptions.PaymentException;
 import com.codewitheyob.store.repositories.OrderRepository;
 import com.stripe.exception.EventDataObjectDeserializationException;
 import com.stripe.exception.SignatureVerificationException;
@@ -17,7 +16,6 @@ import com.stripe.net.Webhook;
 import com.stripe.param.checkout.SessionCreateParams;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
