@@ -22,3 +22,4 @@ stripe:
   webhookSecretKey: ${STRIPE_WEBHOOK_SECRET_KEY}
 
 websiteUrl: http://localhost:4242
+kind: Application
